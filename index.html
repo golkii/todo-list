@@ -18,19 +18,28 @@
   </div>
 
   <div id="sidebar">
-    <div class="side-block">Today</div>
-    <h3 class="side-header">Priority</h3>
-    <div class="side-block">High</div>
-    <h3 class="side-header" id="projects">Projects</h3>
-    <!-- <div class="side-block">My project</div> -->
+    <div class="side-block-container" id="side-block-container">
+      <div class="side-block">Today</div>
+      <h3 class="side-header">Priority</h3>
+      <div class="side-block">High</div>
+      <h3 class="side-header" id="projects">Projects</h3>
+      <!-- <div class="side-block">My project</div> -->
+    </div>
+    <div class="side-block" id="add-project-button">Add project</div>
   </div>
 
   <div id="main">
-    <h1 class="project-header">My project</h1>
+    <h1 class="main-header" id="main-header">My project</h1>
     <div class="task-container">
-      <!-- <div class="task">Do chores</div>
-      <div class="task">Read book</div> -->
+      <div class="task">Do chores</div>
+      <!-- <div class="task">
+        <input type="checkbox">
+        <h3 class="task-header">Read book</h3>
+        <p class="task-priority">Low</p>
+        <p class="task-due-date">14:00 2 March</p>
+      </div> -->
     </div>
+    <button id="add-task-button">Add task</button>
   </div>
 
   <script src="./main.js"></script>
