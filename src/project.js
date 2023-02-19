@@ -12,6 +12,11 @@ class Project {
     this.tasks.push(newTask);
   }
 
+  createTask(title, description, dueDate, priority) {
+    let newTask = new Task(title, description, dueDate, priority);
+    this.tasks.push(newTask);
+  }
+
   getTask(position) {
     return this.tasks[position];
   }
@@ -22,6 +27,14 @@ class Project {
 
   getTitle() {
     return this.title;
+  }
+
+  getAllTasks() {
+    return this.tasks;
+  }
+
+  getNumberOfTasks() {
+    return this.tasks.length;
   }
 }
 
