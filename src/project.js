@@ -36,6 +36,13 @@ class Project {
   getNumberOfTasks() {
     return this.tasks.length;
   }
+
+  removeTask(task) {
+    if (this.tasks.indexOf(task) >= 0) {
+      let temp = this.tasks.indexOf(task);
+      this.tasks.splice(temp, 1);
+    }
+  }
 }
 
 export { Project };

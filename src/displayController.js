@@ -1,7 +1,16 @@
+import autosize from "autosize";
+
 const displayController = (function () {
   let projectsHeader = document.getElementById('side-block-container');
   let taskContainer = document.querySelector('.task-container');
   let addTaskButton = document.getElementById('add-task-button');
+
+  const generatePage = (projects) => {
+    projects.forEach((project) => {
+      generateProjects(project);
+    });
+    generateProjectPage(projects[0], projects);
+  }
 
   // Function generates projects on sidebar
   const generateProjects = (project) => {
@@ -9,12 +18,11 @@ const displayController = (function () {
     newProject.textContent = project.getTitle();
     newProject.classList.add('side-block');
     projectsHeader.append(newProject);
-
     newProject.addEventListener('click', () => generateProjectPage(project));
   }
 
   // Function generates tasks in main block
-  const generateTask = (task) => {
+  const generateTask = (task, project) => {
     let newTask = document.createElement('div');
     let status = document.createElement('input');
     status.type = 'checkbox';
@@ -35,10 +43,24 @@ const displayController = (function () {
     taskDueDate.classList.add('task-due-date');
     newTask.append(taskDueDate);
 
+    let description = document.createElement('p');
+    description.textContent = task.description;
+    description.classList.add('task-description');
+    newTask.append(description);
+
+    let removeButton = document.createElement('button');
+    removeButton.classList.add('remove-task-button');
+    removeButton.textContent = 'X';
+    newTask.append(removeButton);
+    removeButton.addEventListener('click', () => {
+      project.removeTask(task);
+      generateProjectPage(project);
+    });
+
     newTask.classList.add('task');
 
     newTask.addEventListener('click', (e) => {
-      if (e.target.tagName == 'INPUT') {
+      if (e.target.tagName == 'INPUT' || e.target.tagName == 'BUTTON') {
         return;
       }
       // function that generates add/update task form
@@ -48,12 +70,25 @@ const displayController = (function () {
 
   //Function generates main header
   const generateHeader = (project) => {
+    console.log('Called generateHeader()');
     let projectHeader = document.getElementById('main-header');
-    projectHeader.textContent = project.getTitle();
+    projectHeader.removeEventListener('change', changeHead);
+    projectHeader.value = project.getTitle();
+    autosize(projectHeader);
+    projectHeader.addEventListener('change', changeHead);
+    autosize.update(projectHeader);
+  }
+
+  const changeHead = (e) => {
+    let projectHeader = document.getElementById('main-header');
+    console.log(project);
+    project.setTitle(projectHeader.value);
+    generateHeader(project);
   }
 
   //Function generates main page
-  const generateProjectPage = (project) => {
+  const generateProjectPage = (project, projects) => {
+
     addTaskButton.removeEventListener('click', () => { });
     addTaskButton.classList.remove('hide');
     taskContainer.innerHTML = '';
@@ -62,7 +97,7 @@ const displayController = (function () {
 
     let tasks = project.getAllTasks();
     if (tasks.length != 0) {
-      tasks.forEach(value => generateTask(value));
+      tasks.forEach(value => generateTask(value, project));
     }
   }
 
@@ -71,6 +106,7 @@ const displayController = (function () {
     addTaskButton.classList.add('hide');
     let projectHeader = document.getElementById('main-header');
     projectHeader.textContent = 'Adding new task';
+    projectHeader.disabled = true;
 
     let form = document.createElement('form');
 
@@ -106,11 +142,12 @@ const displayController = (function () {
 
     submitButton.addEventListener('click', () => {
       project.createTask(titleForm.value, descriptionForm.value, dueDateForm.value, priorityForm.value);
+      projectHeader.disabled = false;
       generateProjectPage(project);
     });
   }
 
-  return { generateProjects, generateTask, generateHeader, generateProjectPage }
+  return { generateProjects, generateTask, generateHeader, generateProjectPage, generatePage }
 })();
 
 export { displayController };
