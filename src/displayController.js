@@ -1,24 +1,27 @@
 import autosize from "autosize";
 
 const displayController = (function () {
-  let projectsHeader = document.getElementById('side-block-container');
   let taskContainer = document.querySelector('.task-container');
   let addTaskButton = document.getElementById('add-task-button');
+  let projectsContainer = document.getElementById('projects-container');
 
-  const generatePage = (projects) => {
+  const generatePage = (projects, position) => {
+    projectsContainer.innerHTML = '';
     projects.forEach((project) => {
-      generateProjects(project);
+      generateProjects(project, projects);
     });
-    generateProjectPage(projects[0], projects);
+    generateProjectPage(projects[position], projects);
   }
 
   // Function generates projects on sidebar
-  const generateProjects = (project) => {
+  const generateProjects = (project, projects) => {
     let newProject = document.createElement('div');
     newProject.textContent = project.getTitle();
     newProject.classList.add('side-block');
-    projectsHeader.append(newProject);
-    newProject.addEventListener('click', () => generateProjectPage(project));
+    projectsContainer.append(newProject);
+    newProject.addEventListener('click', () => {
+      generateProjectPage(project, projects);
+    });
   }
 
   // Function generates tasks in main block
@@ -69,7 +72,7 @@ const displayController = (function () {
   }
 
   //Function generates main header
-  const generateHeader = (project) => {
+  const generateHeader = (project, projects) => {
     console.log('Called generateHeader()');
 
     let projectHeader = document.getElementById('main-header');
@@ -83,16 +86,13 @@ const displayController = (function () {
     projectHeader.addEventListener('change', () => {
       console.log(project);
       project.setTitle(projectHeader.value);
+      projectsContainer.innerHTML = '';
+      projects.forEach((project) => {
+        generateProjects(project, projects);
+      });
       generateHeader(project);
     });
     autosize.update(projectHeader);
-  }
-
-  const changeHead = (e) => {
-    let projectHeader = document.getElementById('main-header');
-    console.log(project);
-    project.setTitle(projectHeader.value);
-    generateHeader(project);
   }
 
   //Function generates main page
@@ -101,7 +101,7 @@ const displayController = (function () {
     addTaskButton.removeEventListener('click', () => { });
     addTaskButton.classList.remove('hide');
     taskContainer.innerHTML = '';
-    generateHeader(project);
+    generateHeader(project, projects);
     addTaskButton.addEventListener('click', () => { generateTaskForm(project) });
 
     let tasks = project.getAllTasks();

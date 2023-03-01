@@ -37,7 +37,9 @@ p {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 10px;
+  /* justify-content:flex-start; */
+  position: relative;
 }
 
 .side-block-container {
@@ -71,6 +73,9 @@ p {
 
 #add-project-button {
   justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  width: calc(100% - 60px);
 }
 
 #main {

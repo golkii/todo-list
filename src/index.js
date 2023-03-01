@@ -11,14 +11,6 @@ let task1 = new Task('do chores', 'Lorem ipsum dolor sit amet. Ut molestias cons
 let task2 = new Task('homework qwe rfghjhgf rtgyhuygtf rd ertgytrertyhuj dnrn', 'Lorem ipsum dolor sit amet. Ut molest', '25.02.2023', 'high');
 project.addTask(task1);
 project.addTask(task2);
-// let temp = project.getAllTasks();
-
-// console.log(project.getTask(0));
-
-//displayController.generateProjects(project);
-
-// displayController.generateHeader(project);
-// displayController.generateTask(project.getTask(0));
 
 let workProject = new Project('work fednrmr yrmne etnet w n etn e wtyetjemry');
 
@@ -29,12 +21,14 @@ workProject.addTask(workTask1);
 workProject.addTask(workTask2);
 workProject.addTask(workTask3);
 
-// console.log(temp.indexOf(workTask1));
-
 allProjects.push(project);
 allProjects.push(workProject);
 
-// displayController.generateProjects(project);
-// displayController.generateProjects(workProject);
-// displayController.generateProjectPage(project);
-displayController.generatePage(allProjects);
+displayController.generatePage(allProjects, 0);
+
+let addProjectButton = document.getElementById('add-project-button');
+addProjectButton.addEventListener('click', () => {
+    let newProject = new Project('Untitled');
+    allProjects.push(newProject);
+    displayController.generatePage(allProjects, allProjects.length - 1);
+});
