@@ -71,11 +71,20 @@ const displayController = (function () {
   //Function generates main header
   const generateHeader = (project) => {
     console.log('Called generateHeader()');
+
     let projectHeader = document.getElementById('main-header');
-    projectHeader.removeEventListener('change', changeHead);
+    projectHeader.remove();
+    projectHeader = document.createElement('textarea');
+    projectHeader.id = 'main-header';
+    taskContainer.before(projectHeader);
+    
     projectHeader.value = project.getTitle();
     autosize(projectHeader);
-    projectHeader.addEventListener('change', changeHead);
+    projectHeader.addEventListener('change', () => {
+      console.log(project);
+      project.setTitle(projectHeader.value);
+      generateHeader(project);
+    });
     autosize.update(projectHeader);
   }
 
