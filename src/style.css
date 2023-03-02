@@ -4,7 +4,7 @@ body {
   margin: 0;
   display: grid;
   font-family: 'Roboto', sans-serif;
-  grid-template-rows: 70px 1fr;
+  grid-template-rows: 70px calc(100vh - 70px);
   grid-template-columns: 270px 6fr;
   height: max(100vh, 600px);
 }
@@ -39,7 +39,9 @@ p {
   flex-direction: column;
   gap: 10px;
   /* justify-content:flex-start; */
-  position: relative;
+  /* position: relative; */
+  max-height: calc(100vh - 70px);
+  overflow-y: scroll;
 }
 
 .side-block-container {
@@ -59,6 +61,7 @@ p {
   border-radius: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   transition: 0.1s;
   font-size: 18px;
   font-weight: 400;
@@ -71,11 +74,31 @@ p {
   transition: 0.1s;
 }
 
+#sidebar::-webkit-scrollbar {
+  width: 2px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 0px solid slategrey;
+}
+
 #add-project-button {
   justify-content: center;
-  position: absolute;
+  /* position: absolute; */
   bottom: 20px;
-  width: calc(100% - 60px);
+  /* width: calc(100% - 60px); */
+  background-color: #f1f1f1;
+  border: 1px solid black;
+}
+
+#add-project-button:hover {
+  border: 1px solid #dfdff4;
+  background-color:#dfdff4;
 }
 
 #main {
@@ -92,6 +115,7 @@ p {
   width: 540px;
   padding: 0;
   font-family: 'Roboto', sans-serif;
+  /* flex: 1; */
 }
 
 #main-header:disabled {
@@ -104,6 +128,21 @@ p {
   grid-auto-rows: fit-content;
   gap: 10px;
   justify-content: center;
+  max-height: 70%;
+  overflow-y: scroll;
+}
+
+.task-container::-webkit-scrollbar {
+  width: 2px;
+}
+
+.task-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.task-container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 0px solid slategrey;
 }
 
 .task {

@@ -17,9 +17,24 @@ const displayController = (function () {
   const generateProjects = (project, projects) => {
     let newProject = document.createElement('div');
     newProject.textContent = project.getTitle();
+    let removeProjectButton = document.createElement('button');
+    removeProjectButton.textContent = 'x';
+    newProject.append(removeProjectButton);
+    removeProjectButton.addEventListener('click', () => {
+      if (projects.indexOf(project) >= 0) {
+        projects.splice(projects.indexOf(project), 1);
+        projectsContainer.innerHTML = '';
+        projects.forEach((project) => {
+          generateProjects(project, projects);
+        });
+      }
+    });
     newProject.classList.add('side-block');
     projectsContainer.append(newProject);
-    newProject.addEventListener('click', () => {
+    newProject.addEventListener('click', (e) => {
+      if (e.target.tagName == 'BUTTON') {
+        return;
+      }
       generateProjectPage(project, projects);
     });
   }

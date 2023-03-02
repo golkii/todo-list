@@ -23,6 +23,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "autosize": "^6.0.1"
+    "autosize": "^6.0.1",
+    "date-fns": "^2.29.3"
   }
 }
