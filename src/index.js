@@ -4,13 +4,10 @@ import { Task } from './task';
 import { displayController } from './displayController';
 
 let allProjects = [];
-console.log(localStorage);
 
 if (localStorage.length == 0) {
     let task1 = new Task('task', 'Lorem ipsum dolor sit amet. Ut molestias consequatur', '25.02.2023', 'mid');
-
     let project = new Project('Default', [task1]);
-
     allProjects.push(project);
 }
 else {
@@ -21,7 +18,6 @@ else {
         let tmp = JSON.parse(localStorage.getItem(key), (key, value) => {
             if (key == 'tasks') {
                 value.forEach((element, position) => {
-                    console.log(element);
                     value[position] = new Task(element._title, element._description, element._dueDate, element._priority);
                 });
             };
@@ -32,13 +28,8 @@ else {
     }
 }
 
-//localStorage.clear();
-
-console.log(allProjects);
-
 document.addEventListener('click', () => {
     localStorage.clear();
-    //console.log('write in localstorage');
     allProjects.forEach((element) => {
         localStorage.setItem(element.getTitle(), JSON.stringify(element));
     });
