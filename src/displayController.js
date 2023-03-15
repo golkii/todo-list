@@ -6,6 +6,7 @@ const displayController = (function () {
   let projectsContainer = document.getElementById('projects-container');
 
   const generatePage = (projects, position) => {
+    //console.log('call generatePage');
     projectsContainer.innerHTML = '';
     projects.forEach((project) => {
       generateProjects(project, projects);
@@ -15,6 +16,7 @@ const displayController = (function () {
 
   // Function generates projects on sidebar
   const generateProjects = (project, projects) => {
+    //console.log('call generateProjects');
     let newProject = document.createElement('div');
     newProject.textContent = project.getTitle();
     let removeProjectButton = document.createElement('button');
@@ -40,7 +42,8 @@ const displayController = (function () {
   }
 
   // Function generates tasks in main block
-  const generateTask = (task, project) => {
+  const generateTask = (task, project, projects) => {
+    //console.log('call generateTask');
     let newTask = document.createElement('div');
     let status = document.createElement('input');
     status.type = 'checkbox';
@@ -72,7 +75,7 @@ const displayController = (function () {
     newTask.append(removeButton);
     removeButton.addEventListener('click', () => {
       project.removeTask(task);
-      generateProjectPage(project);
+      generateProjectPage(project, projects);
     });
 
     newTask.classList.add('task');
@@ -88,7 +91,7 @@ const displayController = (function () {
 
   //Function generates main header
   const generateHeader = (project, projects) => {
-    console.log('Called generateHeader()');
+    //console.log('Called generateHeader()');
 
     let projectHeader = document.getElementById('main-header');
     projectHeader.remove();
@@ -99,33 +102,35 @@ const displayController = (function () {
     projectHeader.value = project.getTitle();
     autosize(projectHeader);
     projectHeader.addEventListener('change', () => {
-      console.log(project);
+      //console.log(project);
+      //console.log(projects);
       project.setTitle(projectHeader.value);
       projectsContainer.innerHTML = '';
       projects.forEach((project) => {
         generateProjects(project, projects);
       });
-      generateHeader(project);
+      generateHeader(project, projects);
     });
     autosize.update(projectHeader);
   }
 
   //Function generates main page
   const generateProjectPage = (project, projects) => {
-
+    //console.log('call generateProjectPage');
     addTaskButton.removeEventListener('click', () => { });
     addTaskButton.classList.remove('hide');
     taskContainer.innerHTML = '';
     generateHeader(project, projects);
-    addTaskButton.addEventListener('click', () => { generateTaskForm(project) });
+    addTaskButton.addEventListener('click', () => { generateTaskForm(project, projects) });
 
     let tasks = project.getAllTasks();
     if (tasks.length != 0) {
-      tasks.forEach(value => generateTask(value, project));
+      tasks.forEach(value => generateTask(value, project, projects));
     }
   }
 
-  const generateTaskForm = (project) => {
+  const generateTaskForm = (project, projects) => {
+    //console.log('call generateTaskForm');
     taskContainer.innerHTML = '';
     addTaskButton.classList.add('hide');
     let projectHeader = document.getElementById('main-header');
@@ -167,7 +172,7 @@ const displayController = (function () {
     submitButton.addEventListener('click', () => {
       project.createTask(titleForm.value, descriptionForm.value, dueDateForm.value, priorityForm.value);
       projectHeader.disabled = false;
-      generateProjectPage(project);
+      generateProjectPage(project, projects);
     });
   }
 

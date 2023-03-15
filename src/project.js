@@ -4,8 +4,14 @@ class Project {
   title = 'Untitled';
   tasks = [];
 
-  constructor(title) {
+  constructor(title, newTasks) {
     this.title = title;
+    if (this.tasks.length == 0 && newTasks != undefined) {
+      this.tasks = newTasks;
+    }
+    else if (newTasks != undefined){
+      this.tasks = this.tasks.concat(newTasks);
+    }
   }
 
   addTask(newTask) {

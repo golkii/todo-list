@@ -4,25 +4,45 @@ import { Task } from './task';
 import { displayController } from './displayController';
 
 let allProjects = [];
+console.log(localStorage);
 
-let project = new Project('home');
+if (localStorage.length == 0) {
+    let task1 = new Task('task', 'Lorem ipsum dolor sit amet. Ut molestias consequatur', '25.02.2023', 'mid');
 
-let task1 = new Task('do chores', 'Lorem ipsum dolor sit amet. Ut molestias consequatur non veniam iusto eos mollitia doloribus aut molestiae labor', '25.02.2023', 'mid');
-let task2 = new Task('homework qwe rfghjhgf rtgyhuygtf rd ertgytrertyhuj dnrn', 'Lorem ipsum dolor sit amet. Ut molest', '25.02.2023', 'high');
-project.addTask(task1);
-project.addTask(task2);
+    let project = new Project('Default', [task1]);
 
-let workProject = new Project('work fednrmr yrmne etnet w n etn e wtyetjemry');
+    allProjects.push(project);
+}
+else {
+    for(let key in localStorage) {
+        if (!localStorage.hasOwnProperty(key)) {
+          continue;
+        }
+        let tmp = JSON.parse(localStorage.getItem(key), (key, value) => {
+            if (key == 'tasks') {
+                value.forEach((element, position) => {
+                    console.log(element);
+                    value[position] = new Task(element._title, element._description, element._dueDate, element._priority);
+                });
+            };
+            return value;
+        });
+        let tmp2 = new Project(tmp.title, tmp.tasks);
+        allProjects.push(tmp2);
+    }
+}
 
-let workTask1 = new Task('Write code', 'wrwlb wlrbk', '24.02.2023', 'high');
-let workTask2 = new Task('Fix keyboard', 'Your keyboard is dead', '28.02.2023', 'low');
-let workTask3 = new Task('Send email to boss', 'He need information from you', '24.02.2023', 'mid');
-workProject.addTask(workTask1);
-workProject.addTask(workTask2);
-workProject.addTask(workTask3);
+//localStorage.clear();
 
-allProjects.push(project);
-allProjects.push(workProject);
+console.log(allProjects);
+
+document.addEventListener('click', () => {
+    localStorage.clear();
+    //console.log('write in localstorage');
+    allProjects.forEach((element) => {
+        localStorage.setItem(element.getTitle(), JSON.stringify(element));
+    });
+});
 
 displayController.generatePage(allProjects, 0);
 
